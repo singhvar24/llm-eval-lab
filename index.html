@@ -81,8 +81,23 @@
     <div id="inspect" class="inspect" aria-live="polite"></div>
   </section>
 
+  <section aria-labelledby="h-abs">
+    <h2 id="h-abs">4 · Know when not to answer</h2>
+    <p class="muted">A grounded assistant should refuse when the handbook has no answer. This asks a simple question: can the top retrieval score tell 32 answerable questions from 10 out-of-scope ones? Uses the retriever selected above.</p>
+    <div class="twocol">
+      <figure><svg id="abs-chart" viewBox="0 0 420 340" role="img" aria-labelledby="abs-t abs-d"></svg><figcaption id="abs-sum" class="legend" aria-live="polite"></figcaption></figure>
+      <div class="tablewrap"><table id="abs-table"></table></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-heat">
+    <h2 id="h-heat">5 · Where the hard questions are</h2>
+    <p class="muted">Each row is a benchmark question, each column one of the 36 configurations. Teal = the gold section was retrieved, rose = missed. Rows are sorted hardest first.</p>
+    <figure><svg id="heat" viewBox="0 0 800 520" role="img" aria-labelledby="heat-t heat-d"></svg><figcaption class="legend" id="heat-legend"></figcaption></figure>
+  </section>
+
   <section aria-labelledby="h-play">
-    <h2 id="h-play">4 · Try your own query</h2>
+    <h2 id="h-play">6 · Try your own query</h2>
     <form class="search" id="play" onsubmit="return false">
       <input id="q" type="search" placeholder="e.g. can I cancel the policy early?" aria-label="Your question" autocomplete="off">
       <button type="submit">Search</button>
@@ -92,9 +107,11 @@
 
   <section class="about" aria-labelledby="h-about">
     <h2 id="h-about">About this project</h2>
+    <img class="diagram" src="web/pipeline.svg" width="900" height="330" loading="lazy" alt="Pipeline diagram: corpus, chunking, retriever and top-k passages feed quality and cost metrics and an abstention check in the browser; the Python API adds a Claude answer and an LLM judge.">
     <ul>
       <li><strong>Python toolkit</strong> (<code>src/evallab</code>): chunking, BM25, TF-IDF, reciprocal-rank fusion, metrics, cost model, CLI and a FastAPI service.</li>
       <li><strong>Parity-tested:</strong> this page runs a JavaScript port of the same code; a Node test checks it reproduces the Python metrics on all 36 configurations.</li>
+      <li><strong>Claude API (Python only):</strong> <code>evallab generate</code>, <code>evallab eval-llm</code> and the <code>/answer</code> endpoint answer from retrieved passages with citations, abstain when the answer is missing, and can be graded by an LLM judge. This page never sends anything to an LLM and never asks for an API key.</li>
       <li><strong>Limits:</strong> 32 hand-written questions over 40 sections is small, so many configurations score similarly. Treat it as a demonstration of the method, not a benchmark.</li>
     </ul>
     <p>Built by <a href="https://singhvar24.github.io/">Varnika Singh</a> · <a href="https://github.com/singhvar24/llm-eval-lab">GitHub</a></p>

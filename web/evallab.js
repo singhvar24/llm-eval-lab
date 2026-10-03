@@ -208,3 +208,25 @@ export function paretoFront(results, metric = "mrr", model = "medium") {
     o.metrics[metric] >= r.metrics[metric] && o.cost_per_1k[model] <= r.cost_per_1k[model] &&
     (o.metrics[metric] > r.metrics[metric] || o.cost_per_1k[model] < r.cost_per_1k[model])));
 }
+
+// ---------- refusal calibration (mirror of src/evallab/abstain.py) ----------
+export function topScores(cfg, corpus, questions) {
+  const chunks = chunkCorpus(corpus, cfg.chunking, cfg.size, cfg.overlap);
+  const retr = buildRetriever(cfg.retriever, chunks);
+  return questions.map((q) => { const r = retr.search(q.question); return r.length ? r[0][1] : 0; });
+}
+
+export function abstentionReport(cfg, corpus, answerable, unanswerable) {
+  const a = topScores(cfg, corpus, answerable), u = topScores(cfg, corpus, unanswerable);
+  const thresholds = [...new Set([...a, ...u, 0])].sort((x, y) => x - y);
+  const curve = thresholds.map((t) => {
+    const coverage = a.filter((x) => x >= t).length / a.length;
+    const rejection = u.filter((x) => x < t).length / u.length;
+    return { threshold: t, coverage, rejection, j: coverage + rejection - 1 };
+  });
+  let best = curve[0];
+  for (const p of curve) if (p.j > best.j || (p.j === best.j && p.threshold < best.threshold)) best = p;
+  let wins = 0;
+  for (const x of a) for (const y of u) wins += (x > y ? 1 : 0) + (x === y ? 0.5 : 0);
+  return { curve, best, auc: wins / (a.length * u.length), answerable_scores: a, unanswerable_scores: u };
+}

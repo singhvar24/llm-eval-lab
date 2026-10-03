@@ -76,3 +76,18 @@ def test_pareto_front_is_non_dominated():
     for f in front:
         for o in results:
             assert not (o["metrics"]["mrr"] > f["metrics"]["mrr"] and o["cost_per_1k"]["medium"] <= f["cost_per_1k"]["medium"])
+
+
+def test_abstention_report_separates_groups():
+    import json
+
+    from evallab.abstain import abstention_report
+    from evallab.runner import load_unanswerable
+
+    unans = load_unanswerable()
+    assert len(unans) == 10
+    rep = abstention_report(Config(retriever="bm25"), CORPUS, QA, unans)
+    assert rep["auc"] > 0.75 and 0 <= rep["best"]["coverage"] <= 1
+    # rank-fusion scores carry no magnitude, so they cannot separate the groups
+    assert abstention_report(Config(retriever="hybrid"), CORPUS, QA, unans)["auc"] < 0.6
+    assert json.dumps(rep["curve"][0])  # serialisable

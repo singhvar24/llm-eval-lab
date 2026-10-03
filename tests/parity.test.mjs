@@ -2,7 +2,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { evaluate, defaultGrid, tokenize, chunkCorpus, paretoFront, buildRetriever } from "../web/evallab.js";
+import { evaluate, defaultGrid, tokenize, chunkCorpus, paretoFront, buildRetriever, abstentionReport } from "../web/evallab.js";
 
 const load = (p) => JSON.parse(readFileSync(new URL(p, import.meta.url), "utf8"));
 const corpus = load("../data/corpus.json"), qa = load("../data/qa.json"), pricing = load("../data/pricing.json");
@@ -46,4 +46,14 @@ test("pareto front is non-empty and non-dominated", () => {
   assert.ok(front.length > 0);
   for (const f of front) for (const o of results)
     assert.ok(!(o.metrics.mrr > f.metrics.mrr && o.cost_per_1k.medium <= f.cost_per_1k.medium));
+});
+
+test("refusal calibration matches Python for all retrievers", () => {
+  const unans = load("../data/qa_unanswerable.json"), gold = load("./golden/abstain.json");
+  for (const [name, g] of Object.entries(gold)) {
+    const rep = abstentionReport({ chunking: "section", size: 80, overlap: 20, retriever: name, k: 3 }, corpus, qa, unans);
+    close(rep.auc, g.auc, `${name} auc`);
+    assert.equal(rep.curve.length, g.points, `${name} points`);
+    for (const key of ["threshold", "coverage", "rejection", "j"]) close(rep.best[key], g.best[key], `${name} best ${key}`);
+  }
 });

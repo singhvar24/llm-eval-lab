@@ -1,0 +1,42 @@
+[
+ {
+  "id": "u01",
+  "question": "What is the current interest rate on a 30 year fixed home loan?"
+ },
+ {
+  "id": "u02",
+  "question": "Does Northwind offer home contents insurance for renters?"
+ },
+ {
+  "id": "u03",
+  "question": "How do I change the bank account used for my direct debit repayments?"
+ },
+ {
+  "id": "u04",
+  "question": "Who is the chief executive officer of Northwind Lenders?"
+ },
+ {
+  "id": "u05",
+  "question": "Are there premium discounts for first home buyers?"
+ },
+ {
+  "id": "u06",
+  "question": "How much capital gains tax do I pay when selling an investment property?"
+ },
+ {
+  "id": "u07",
+  "question": "Can I claim the insurance premium as a tax deduction?"
+ },
+ {
+  "id": "u08",
+  "question": "What is the weather like in Sydney during December?"
+ },
+ {
+  "id": "u09",
+  "question": "How do I apply for a personal car loan?"
+ },
+ {
+  "id": "u10",
+  "question": "Which suburbs have had the best property price growth this year?"
+ }
+]

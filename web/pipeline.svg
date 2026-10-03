@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 330" role="img" aria-labelledby="t d" font-family="Inter,system-ui,Segoe UI,Roboto,sans-serif">
+  <title id="t">LLM Eval Lab pipeline</title>
+  <desc id="d">Corpus is chunked and indexed by a retriever. Retrieved passages feed offline metrics and an abstention check in the browser, and optionally a Claude answer plus an LLM judge through the Python API.</desc>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#5eead4"/></marker>
+    <style>
+      .bg{fill:#0b1220}.box{fill:#111a2e;stroke:#2dd4bf;stroke-width:1.5}.api{fill:#111a2e;stroke:#f59e0b;stroke-width:1.5;stroke-dasharray:6 4}
+      .h{fill:#e8eef7;font-size:14px;font-weight:700}.s{fill:#9fb0c7;font-size:11.5px}.lab{fill:#5eead4;font-size:11px;font-weight:700;letter-spacing:.08em}
+      .lab2{fill:#f59e0b;font-size:11px;font-weight:700;letter-spacing:.08em}.ln{stroke:#5eead4;stroke-width:1.6;fill:none}
+    </style>
+  </defs>
+  <rect class="bg" width="900" height="330" rx="14"/>
+  <text class="lab" x="24" y="30">RUNS IN THE BROWSER AND IN PYTHON</text>
+  <text class="lab2" x="24" y="226">PYTHON API / CLI ONLY — SPENDS CLAUDE API TOKENS</text>
+
+  <rect class="box" x="24" y="48" width="150" height="70" rx="10"/>
+  <text class="h" x="40" y="78">Corpus</text><text class="s" x="40" y="97">8 docs · 40 sections</text>
+  <rect class="box" x="214" y="48" width="170" height="70" rx="10"/>
+  <text class="h" x="230" y="78">Chunking</text><text class="s" x="230" y="97">section | 40/80/120 words</text>
+  <rect class="box" x="424" y="48" width="190" height="70" rx="10"/>
+  <text class="h" x="440" y="78">Retriever</text><text class="s" x="440" y="97">BM25 · TF-IDF · RRF hybrid</text>
+  <rect class="box" x="654" y="48" width="222" height="70" rx="10"/>
+  <text class="h" x="670" y="78">Top-k passages</text><text class="s" x="670" y="97">ids, scores, token counts</text>
+  <path class="ln" d="M174 83H212" marker-end="url(#a)"/><path class="ln" d="M384 83H422" marker-end="url(#a)"/><path class="ln" d="M614 83H652" marker-end="url(#a)"/>
+
+  <rect class="box" x="424" y="150" width="190" height="52" rx="10"/>
+  <text class="h" x="440" y="172">Quality + cost</text><text class="s" x="440" y="190">Hit@k · MRR · nDCG · $/1k</text>
+  <rect class="box" x="654" y="150" width="222" height="52" rx="10"/>
+  <text class="h" x="670" y="172">Abstention check</text><text class="s" x="670" y="190">top score vs threshold (AUC)</text>
+  <path class="ln" d="M765 118V148" marker-end="url(#a)"/><path class="ln" d="M520 118V148" marker-end="url(#a)"/>
+
+  <rect class="api" x="214" y="244" width="250" height="62" rx="10"/>
+  <text class="h" x="230" y="268">Claude answer</text><text class="s" x="230" y="287">grounded in passages, cites [ids]</text>
+  <rect class="api" x="504" y="244" width="250" height="62" rx="10"/>
+  <text class="h" x="520" y="268">LLM judge</text><text class="s" x="520" y="287">structured verdict: correct · grounded</text>
+  <path class="ln" d="M765 118V132H340V242" stroke-dasharray="4 4" marker-end="url(#a)"/>
+  <path class="ln" d="M464 275H502" marker-end="url(#a)"/>
+</svg>

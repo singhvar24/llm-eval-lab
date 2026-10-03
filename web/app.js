@@ -1,4 +1,4 @@
-import { evaluate, defaultGrid, paretoFront, chunkCorpus, buildRetriever, extractiveAnswer } from "./evallab.js";
+import { evaluate, defaultGrid, paretoFront, chunkCorpus, buildRetriever, extractiveAnswer, abstentionReport } from "./evallab.js";
 
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -6,7 +6,7 @@ const COLORS = { bm25: "#0d9488", tfidf: "#6366f1", hybrid: "#f59e0b" };
 const NAMES = { bm25: "BM25", tfidf: "TF-IDF", hybrid: "Hybrid (RRF)" };
 const METRIC_LABEL = { mrr: "MRR", hit: "Hit@k", ndcg: "nDCG@k", precision: "Precision@k", answer_f1: "Answer F1" };
 
-let corpus, qa, pricing, all = [], byKey = new Map();
+let corpus, qa, unans, pricing, all = [], byKey = new Map();
 const key = (c) => `${c.chunking}|${c.size}|${c.overlap}|${c.retriever}|${c.k}`;
 const label = (c) => (c.chunking === "section" ? "section" : `fixed ${c.size}/${c.overlap}`);
 const state = { retriever: "bm25", chunking: "section|80|20", k: 3, model: "medium", metric: "mrr", sort: { col: "metric", dir: -1 } };
@@ -16,7 +16,7 @@ const fmt = (x, d = 2) => x.toFixed(d);
 
 async function load() {
   const j = (p) => fetch(p).then((r) => { if (!r.ok) throw new Error(`${p}: ${r.status}`); return r.json(); });
-  [corpus, qa, pricing] = await Promise.all([j("data/corpus.json"), j("data/qa.json"), j("data/pricing.json")]);
+  [corpus, qa, pricing, unans] = await Promise.all([j("data/corpus.json"), j("data/qa.json"), j("data/pricing.json"), j("data/qa_unanswerable.json")]);
 }
 
 function syncControls() {
@@ -97,11 +97,42 @@ function renderPlayground(q) {
   $("#play-out").innerHTML = `<div class="answer"><strong>Extractive answer:</strong> ${esc(answer)} <em>[${esc(chunks[ranked[0][0]].id)}]</em></div>` + ranked.map(([i, s], r) => chunkHtml(chunks[i], r + 1, null, s)).join("");
 }
 
+function renderAbstention() {
+  const cfg = cfgFromState(), rep = abstentionReport(cfg, corpus, qa, unans), b = rep.best;
+  const W = 420, H = 340, L = 48, B = 44, T = 14, R = 14, X = (v) => L + v * (W - L - R), Y = (v) => T + (1 - v) * (H - T - B);
+  let s = `<title id="abs-t">Refusal calibration curve</title><desc id="abs-d">Share of answerable questions still answered against share of unanswerable questions wrongly answered, as the abstention threshold varies.</desc>`;
+  for (let i = 0; i <= 4; i++) { const v = i / 4; s += `<line x1="${L}" x2="${W - R}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${L - 8}" y="${Y(v) + 4}" text-anchor="end">${v.toFixed(2)}</text><text x="${X(v)}" y="${H - B + 16}" text-anchor="middle">${v.toFixed(2)}</text>`; }
+  s += `<line x1="${X(0)}" y1="${Y(0)}" x2="${X(1)}" y2="${Y(1)}" stroke="var(--muted)" stroke-dasharray="4 4"/>`;
+  const pts = [...rep.curve].sort((p, q) => (1 - p.rejection) - (1 - q.rejection) || p.coverage - q.coverage);
+  s += `<polyline fill="none" stroke="${COLORS[cfg.retriever]}" stroke-width="2.5" points="${pts.map((p) => `${X(1 - p.rejection)},${Y(p.coverage)}`).join(" ")}"/>`;
+  s += `<circle cx="${X(1 - b.rejection)}" cy="${Y(b.coverage)}" r="6" fill="${COLORS[cfg.retriever]}" stroke="var(--ink)" stroke-width="2"><title>Best threshold ${b.threshold.toFixed(3)}</title></circle>`;
+  s += `<text x="${(L + W - R) / 2}" y="${H - 6}" text-anchor="middle">Unanswerable questions wrongly answered →</text><text transform="translate(12 ${(T + H - B) / 2}) rotate(-90)" text-anchor="middle">Answerable questions answered →</text>`;
+  $("#abs-chart").innerHTML = s;
+  $("#abs-sum").innerHTML = `<span><strong>${NAMES[cfg.retriever]}</strong>: AUC ${rep.auc.toFixed(2)}${rep.auc < 0.6 ? " (no better than chance)" : ""}</span><span>Best threshold ${b.threshold.toFixed(2)}: answers ${(b.coverage * 100).toFixed(0)}% of answerable, refuses ${(b.rejection * 100).toFixed(0)}% of out-of-scope</span>` + (cfg.retriever === "hybrid" ? `<span>RRF scores depend only on rank, so they carry no confidence signal.</span>` : "");
+  $("#abs-table").innerHTML = `<thead><tr><th scope="col">Out-of-scope question</th><th scope="col">Top score</th><th scope="col">At best threshold</th></tr></thead><tbody>` +
+    unans.map((u, i) => { const sc = rep.unanswerable_scores[i], refused = sc < b.threshold; return `<tr><td>${esc(u.question)}</td><td>${sc.toFixed(2)}</td><td class="${refused ? "yes" : "no"}">${refused ? "refused ✓" : "answered ✗"}</td></tr>`; }).join("") + "</tbody>";
+}
+
+function renderHeatmap() {
+  const rows = qa.map((q, qi) => ({ q, misses: all.reduce((n, r) => n + (r.per_question[qi].hit ? 0 : 1), 0), qi })).sort((a, b) => b.misses - a.misses || a.qi - b.qi);
+  const cw = 15, ch = 12, L = 250, T = 34, W = 250 + 36 * 15 + 10, H = T + rows.length * ch + 40;
+  let s = `<title id="heat-t">Hit or miss for each question and configuration</title><desc id="heat-d">Grid of benchmark questions by configuration; teal cells mean the gold section was retrieved.</desc>`;
+  ["B", "T", "H"].forEach((letter, g) => { for (let c = 0; c < 4; c++) s += `<text x="${L + (c * 9 + g * 3 + 1) * cw + cw / 2 - 0.5}" y="${T - 6}" text-anchor="middle" style="font-size:10px;font-weight:700">${letter}</text>`; });
+  rows.forEach((row, ri) => {
+    const y = T + ri * ch, text = row.q.question.length > 40 ? row.q.question.slice(0, 39) + "…" : row.q.question;
+    s += `<text x="${L - 8}" y="${y + 10}" text-anchor="end" style="font-size:10px">${esc(text)}</text>`;
+    all.forEach((r, ci) => { const hit = r.per_question[row.qi].hit; s += `<rect x="${L + ci * cw}" y="${y}" width="${cw - 1}" height="${ch - 1}" rx="2" fill="${hit ? "#0d9488" : "#e11d48"}" opacity="${hit ? 0.85 : 1}"><title>${esc(row.q.question)}\n${NAMES[r.config.retriever]} · ${label(r.config)} · k=${r.config.k}: ${hit ? "hit (rank " + r.per_question[row.qi].rank + ")" : "missed"}</title></rect>`; });
+  });
+  [["section", 0], ["fixed 40/10", 9], ["fixed 80/20", 18], ["fixed 120/30", 27]].forEach(([t, c]) => { s += `<text x="${L + c * cw}" y="${T + rows.length * ch + 16}" style="font-size:10px">${t}</text><line x1="${L + c * cw - 1}" x2="${L + c * cw - 1}" y1="${T - 12}" y2="${T + rows.length * ch}" stroke="var(--line)"/>`; });
+  const el = $("#heat"); el.setAttribute("viewBox", `0 0 ${W} ${H}`); el.innerHTML = s;
+  $("#heat-legend").innerHTML = `<span><i style="background:#0d9488"></i>hit</span><span><i style="background:#e11d48"></i>missed</span><span>B = BM25, T = TF-IDF, H = Hybrid; within each letter, columns are k = 1, 3, 5</span>`;
+}
+
 function refresh() {
   const r = current(); byKey.set(key(r.config), r);
   renderCards(r);
   const front = paretoFront(all, state.metric, state.model);
-  renderChart(front); renderTable(front); renderInspector();
+  renderChart(front); renderTable(front); renderInspector(); renderAbstention(); renderHeatmap();
   const q = $("#q").value.trim(); if (q) renderPlayground(q);
 }
 

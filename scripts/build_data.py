@@ -97,6 +97,21 @@ QA = [
  ("Where can I escalate if I am still unhappy after the internal review?", "d08-s4", "The Australian Financial Complaints Authority."),
 ]
 
+# Out-of-scope questions the handbook cannot answer: a grounded system should abstain.
+UNANSWERABLE = [
+ "What is the current interest rate on a 30 year fixed home loan?",
+ "Does Northwind offer home contents insurance for renters?",
+ "How do I change the bank account used for my direct debit repayments?",
+ "Who is the chief executive officer of Northwind Lenders?",
+ "Are there premium discounts for first home buyers?",
+ "How much capital gains tax do I pay when selling an investment property?",
+ "Can I claim the insurance premium as a tax deduction?",
+ "What is the weather like in Sydney during December?",
+ "How do I apply for a personal car loan?",
+ "Which suburbs have had the best property price growth this year?",
+]
+
+
 def main():
     corpus = []
     for did, title, secs in DOCS:
@@ -108,11 +123,12 @@ def main():
     out = Path(__file__).resolve().parents[1] / "data"
     (out / "corpus.json").write_text(json.dumps({"synthetic": True, "documents": corpus}, indent=1))
     (out / "qa.json").write_text(json.dumps(qa, indent=1))
+    (out / "qa_unanswerable.json").write_text(json.dumps([{"id": f"u{i+1:02d}", "question": q} for i, q in enumerate(UNANSWERABLE)], indent=1))
     (out / "pricing.json").write_text(json.dumps({
         "note": "Illustrative placeholder prices (USD per 1M tokens). NOT real vendor prices; edit to match your provider.",
         "models": {"small": {"in": 0.25, "out": 1.25}, "medium": {"in": 3.0, "out": 15.0}, "large": {"in": 15.0, "out": 75.0}},
         "system_tokens": 60, "answer_tokens": 80}, indent=1))
-    print(len(corpus), "docs,", len(ids), "sections,", len(qa), "questions")
+    print(len(corpus), "docs,", len(ids), "sections,", len(qa), "questions,", len(UNANSWERABLE), "unanswerable")
 
 if __name__ == "__main__":
     main()

@@ -35,6 +35,10 @@ def load_data(data_dir: Path | None = None):
     return corpus, qa, pricing
 
 
+def load_unanswerable(data_dir: Path | None = None) -> list[dict]:
+    return json.loads((Path(data_dir or DATA_DIR) / "qa_unanswerable.json").read_text())
+
+
 def evaluate(cfg: Config, corpus, qa, pricing, measure_latency: bool = True) -> dict:
     chunks = chunk_corpus(corpus, cfg.chunking, cfg.size, cfg.overlap)
     t0 = time.perf_counter()

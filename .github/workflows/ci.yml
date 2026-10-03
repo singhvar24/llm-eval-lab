@@ -27,3 +27,14 @@ jobs:
         with:
           node-version: 22
       - run: node --test tests/parity.test.mjs
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t llm-eval-lab .
+      - name: Container starts and /health responds
+        run: |
+          docker run -d --name api -p 8000:8000 llm-eval-lab
+          for i in $(seq 1 20); do curl -fsS http://127.0.0.1:8000/health && exit 0; sleep 1; done
+          docker logs api
+          exit 1

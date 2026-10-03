@@ -11,6 +11,7 @@ dependencies = []
 
 [project.optional-dependencies]
 api = ["fastapi>=0.110", "uvicorn>=0.29"]
+llm = ["anthropic>=1.0"]
 dev = ["pytest>=8", "httpx>=0.27", "fastapi>=0.110", "uvicorn>=0.29", "ruff>=0.5"]
 
 [project.scripts]
@@ -25,3 +26,6 @@ pythonpath = ["src"]
 
 [tool.ruff]
 line-length = 130
+
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = ["fastapi.Depends"]

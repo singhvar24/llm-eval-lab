@@ -13,12 +13,15 @@ It evaluates chunking strategy × retriever × top-k on retrieval quality, estim
 
 | Part | Path | Notes |
 |---|---|---|
-| Python toolkit | `src/evallab/` | Chunking, BM25, TF-IDF cosine, hybrid (reciprocal-rank fusion), metrics, cost model, CLI |
-| REST API | `src/evallab/api.py` | FastAPI: `/health`, `/search`, `/evaluate`, `/sweep` (validated inputs, OpenAPI docs at `/docs`) |
-| In-browser demo | `index.html`, `web/` | Vanilla JS port of the toolkit, interactive trade-off chart, question inspector, free-text search |
-| Dataset | `data/` | Synthetic mortgage-insurance handbook (8 documents, 40 sections), 32 questions with gold sections |
-| Tests / CI | `tests/`, `.github/workflows/ci.yml` | pytest (15), Node parity test (5), ruff, data-regeneration check |
+| Python toolkit | `src/evallab/` | Chunking, BM25, TF-IDF cosine, hybrid (reciprocal-rank fusion), metrics, cost model, refusal calibration, CLI |
+| Claude API layer | `src/evallab/llm.py` | Grounded, cited answers with abstention, and an LLM-as-judge with structured output (official `anthropic` SDK) |
+| REST API | `src/evallab/api.py` | FastAPI: `/health`, `/search`, `/evaluate`, `/sweep`, `/abstention`, `/answer` (validated inputs, OpenAPI docs at `/docs`) |
+| In-browser demo | `index.html`, `web/` | Vanilla JS port of the offline parts: trade-off chart, refusal-calibration curve, question-by-configuration heatmap, inspector, free-text search |
+| Dataset | `data/` | Synthetic mortgage-insurance handbook (8 documents, 40 sections), 32 answerable questions with gold sections, 10 out-of-scope questions |
+| Tests / CI | `tests/`, `.github/workflows/ci.yml` | pytest, Node parity tests, ruff, data-regeneration check, Docker build + health check |
 | Container | `Dockerfile` | Runs the API with uvicorn |
+
+![Pipeline diagram](web/pipeline.svg)
 
 ```
 data/*.json ──► chunking ──► retriever (BM25 | TF-IDF | RRF hybrid) ──► top-k chunks
@@ -34,10 +37,28 @@ data/*.json ──► chunking ──► retriever (BM25 | TF-IDF | RRF hybrid) 
 pip install -e ".[dev]"
 evallab sweep                 # table of the best configurations (add --out results.json)
 evallab search "how long are records kept" --retriever hybrid -k 3
+evallab abstain --retriever tfidf       # can the top retrieval score separate out-of-scope questions?
+
+# Claude API (spends tokens on YOUR account; needs ANTHROPIC_API_KEY or `ant auth login`)
+pip install -e ".[llm]"
+evallab generate "How many days does the lender have to lodge a claim?"
+evallab eval-llm --limit 5 --yes        # prints the plan and cost estimate; refuses to run without --yes
 uvicorn evallab.api:app --reload      # http://127.0.0.1:8000/docs
 pytest -q && node --test tests/parity.test.mjs
 python -m http.server 8000    # then open http://localhost:8000/ for the demo
 ```
+
+## Claude API layer
+
+* `answer_question` sends the retrieved passages (with ids) and the question to **Claude Opus 5.5** (`claude-opus-5-5`, override with `--model`) at `effort: low`. The system prompt requires citations like `[d03-s2]` and the exact reply `NOT_IN_DOCUMENTS` when the passages lack the answer. Cited ids that were not retrieved are discarded; `refusal` and `max_tokens` stops are surfaced rather than hidden.
+* `judge_answer` grades a candidate against the reference answer and the passages with structured output (`messages.parse`), returning `correct`, `grounded` and a short rationale.
+* Costs printed by the CLI use list prices cached on 2026-09-25 in `llm.py` — verify them against Anthropic's pricing page.
+* **Not yet run against the live API.** The code is covered by mocked tests (prompt construction, citation filtering, abstention, refusal/truncation, missing-credentials handling, the `/answer` endpoint), but no real Claude call was made while building this, so expect to tune the prompt once you run `eval-llm`.
+* The browser demo deliberately never calls an LLM or asks visitors for a key.
+
+## Refusal calibration
+
+`evallab abstain` asks whether "abstain when the top retrieval score is below *t*" separates the 32 answerable questions from 10 out-of-scope ones. On this dataset BM25 and TF-IDF reach an AUC of about 0.86 and 0.84, whereas the RRF hybrid scores sit near 0.5 because fused scores depend only on rank. Raw BM25 scores are not calibrated across queries, so this is a diagnostic rather than a production rule.
 
 ## Method
 
@@ -52,7 +73,7 @@ python -m http.server 8000    # then open http://localhost:8000/ for the demo
 * The corpus and questions are **synthetic and small** (32 questions). Many configurations land within a few points of each other, so differences are indicative, not statistically significant.
 * **No LLM is called.** Answer quality comes from a deterministic extractive baseline, so "Answer F1" measures retrieval + sentence selection, not generation. The `extractive_answer` function is the intended plug-in point for a Bedrock or Anthropic-API generator; that integration is **not implemented here**.
 * The fictional insurer and all figures in the corpus are invented and do not describe any real product or company.
-* `Dockerfile` and `.github/workflows/ci.yml` were written and the commands inside them were run locally, but the image build and the GitHub Actions run had not been executed locally; the Actions workflow has since passed on GitHub.
+* The Docker image was not built locally (no Docker daemon was available); the CI `docker` job is its first test.
 
 ## Parity between Python and the browser
 
@@ -62,7 +83,7 @@ python -m http.server 8000    # then open http://localhost:8000/ for the demo
 
 Settings → Pages → *Deploy from a branch* → `main` / `(root)`. The site is plain static files; no build step.
 
-GitHub Actions CI (pytest, Node parity test, ruff) passed on the first run.
+The first GitHub Actions run (pytest, Node parity test, ruff, data check) passed; the Docker job was added afterwards.
 
 ## Author
 
