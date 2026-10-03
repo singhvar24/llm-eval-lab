@@ -1,0 +1,19 @@
+{
+ "note": "Illustrative placeholder prices (USD per 1M tokens). NOT real vendor prices; edit to match your provider.",
+ "models": {
+  "small": {
+   "in": 0.25,
+   "out": 1.25
+  },
+  "medium": {
+   "in": 3.0,
+   "out": 15.0
+  },
+  "large": {
+   "in": 15.0,
+   "out": 75.0
+  }
+ },
+ "system_tokens": 60,
+ "answer_tokens": 80
+}

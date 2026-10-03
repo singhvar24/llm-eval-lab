@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>LLM Eval Lab — RAG configuration explorer</title>
+  <meta name="description" content="Interactive, in-browser evaluation of retrieval-augmented generation configurations: accuracy vs latency vs cost on a synthetic policy corpus.">
+  <meta name="theme-color" content="#0b1220">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%230b1220%27/%3E%3Cpath d=%27M7 22l6-8 5 5 7-11%27 stroke=%27%232dd4bf%27 stroke-width=%273%27 fill=%27none%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="web/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap row">
+    <a class="brand" href="./">LLM Eval Lab</a>
+    <nav aria-label="Project links">
+      <a href="https://github.com/singhvar24/llm-eval-lab">Source</a>
+      <a href="https://singhvar24.github.io/">Portfolio</a>
+      <button id="theme" type="button" aria-label="Toggle light/dark theme">◐</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <p class="eyebrow">RAG evaluation · accuracy × latency × cost</p>
+    <h1>Which retrieval configuration is actually worth its cost?</h1>
+    <p class="lead">Pick a chunking strategy, retriever and top-k, then see retrieval quality, estimated prompt cost and measured latency on a 32-question benchmark. Everything runs in your browser.</p>
+    <p class="notice" role="note"><strong>How to read this:</strong> the corpus is synthetic (a fictional lender's mortgage-insurance handbook). Retrieval metrics and latency are computed live. No LLM is called — answers come from a deterministic extractive baseline, and costs use <em>illustrative</em> prices that you can compare but should replace with your provider's.</p>
+  </section>
+
+  <section aria-labelledby="h-config">
+    <h2 id="h-config">1 · Configure</h2>
+    <form class="controls" id="controls" onsubmit="return false">
+      <fieldset>
+        <legend>Retriever</legend>
+        <label><input type="radio" name="retriever" value="bm25" checked> BM25</label>
+        <label><input type="radio" name="retriever" value="tfidf"> TF-IDF cosine</label>
+        <label><input type="radio" name="retriever" value="hybrid"> Hybrid (RRF)</label>
+      </fieldset>
+      <label class="field">Chunking
+        <select name="chunking">
+          <option value="section|80|20">By section</option>
+          <option value="fixed|40|10">Fixed 40 words / 10 overlap</option>
+          <option value="fixed|80|20">Fixed 80 words / 20 overlap</option>
+          <option value="fixed|120|30">Fixed 120 words / 30 overlap</option>
+        </select>
+      </label>
+      <label class="field">Top-k: <output id="k-out">3</output>
+        <input type="range" name="k" min="1" max="5" value="3">
+      </label>
+      <label class="field">Price model
+        <select name="model"><option value="small">Small</option><option value="medium" selected>Medium</option><option value="large">Large</option></select>
+      </label>
+    </form>
+
+    <div class="cards" id="cards" aria-live="polite"></div>
+  </section>
+
+  <section aria-labelledby="h-sweep">
+    <h2 id="h-sweep">2 · Explore the trade-off</h2>
+    <div class="row between wrapflex">
+      <p class="muted">All 36 configurations. The line joins the Pareto frontier: configurations no other setting beats on both quality and cost. Click a point to load it.</p>
+      <label class="field inline">Quality metric
+        <select id="metric">
+          <option value="mrr" selected>MRR</option><option value="hit">Hit@k</option><option value="ndcg">nDCG@k</option>
+          <option value="precision">Precision@k</option><option value="answer_f1">Answer F1</option>
+        </select>
+      </label>
+    </div>
+    <figure>
+      <svg id="chart" viewBox="0 0 720 360" role="img" aria-labelledby="chart-t chart-d"></svg>
+      <figcaption id="legend" class="legend"></figcaption>
+    </figure>
+    <div class="tablewrap"><table id="table"></table></div>
+  </section>
+
+  <section aria-labelledby="h-inspect">
+    <h2 id="h-inspect">3 · Inspect a question</h2>
+    <label class="field">Benchmark question <select id="question"></select></label>
+    <div id="inspect" class="inspect" aria-live="polite"></div>
+  </section>
+
+  <section aria-labelledby="h-play">
+    <h2 id="h-play">4 · Try your own query</h2>
+    <form class="search" id="play" onsubmit="return false">
+      <input id="q" type="search" placeholder="e.g. can I cancel the policy early?" aria-label="Your question" autocomplete="off">
+      <button type="submit">Search</button>
+    </form>
+    <div id="play-out" class="inspect" aria-live="polite"></div>
+  </section>
+
+  <section class="about" aria-labelledby="h-about">
+    <h2 id="h-about">About this project</h2>
+    <ul>
+      <li><strong>Python toolkit</strong> (<code>src/evallab</code>): chunking, BM25, TF-IDF, reciprocal-rank fusion, metrics, cost model, CLI and a FastAPI service.</li>
+      <li><strong>Parity-tested:</strong> this page runs a JavaScript port of the same code; a Node test checks it reproduces the Python metrics on all 36 configurations.</li>
+      <li><strong>Limits:</strong> 32 hand-written questions over 40 sections is small, so many configurations score similarly. Treat it as a demonstration of the method, not a benchmark.</li>
+    </ul>
+    <p>Built by <a href="https://singhvar24.github.io/">Varnika Singh</a> · <a href="https://github.com/singhvar24/llm-eval-lab">GitHub</a></p>
+  </section>
+</main>
+<script type="module" src="web/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,194 @@
+[
+ {
+  "id": "q01",
+  "question": "Who benefits from lenders mortgage insurance, the borrower or the bank?",
+  "gold": "d01-s1",
+  "answer": "It protects the lender, not the borrower."
+ },
+ {
+  "id": "q02",
+  "question": "At what deposit size will I have to pay LMI?",
+  "gold": "d01-s2",
+  "answer": "LMI is required when the LVR is above 80 percent."
+ },
+ {
+  "id": "q03",
+  "question": "Does the policy need to be renewed every year?",
+  "gold": "d01-s4",
+  "answer": "No, it runs until the loan is repaid with no renewal."
+ },
+ {
+  "id": "q04",
+  "question": "Why do lenders offer insurance that allows smaller deposits?",
+  "gold": "d01-s5",
+  "answer": "LMI lets lenders approve loans with smaller deposits."
+ },
+ {
+  "id": "q05",
+  "question": "What is the minimum savings deposit and how long must it be held?",
+  "gold": "d02-s1",
+  "answer": "At least 5 percent genuine savings held for three months."
+ },
+ {
+  "id": "q06",
+  "question": "Which factors drive the cost of my premium?",
+  "gold": "d02-s2",
+  "answer": "LVR, loan amount and owner-occupied versus investment."
+ },
+ {
+  "id": "q07",
+  "question": "How much would a 90 percent LVR loan cost in premium?",
+  "gold": "d02-s3",
+  "answer": "About 1.8 percent of the loan."
+ },
+ {
+  "id": "q08",
+  "question": "What happens if I add the premium to my loan balance?",
+  "gold": "d02-s4",
+  "answer": "Capitalising increases total interest paid."
+ },
+ {
+  "id": "q09",
+  "question": "Is government duty charged on the premium and can it be refunded?",
+  "gold": "d02-s5",
+  "answer": "State stamp duty may apply and is not refundable by Northwind."
+ },
+ {
+  "id": "q10",
+  "question": "Who submits the claim after a property is sold at a loss?",
+  "gold": "d03-s1",
+  "answer": "The lender lodges the claim with the insurer."
+ },
+ {
+  "id": "q11",
+  "question": "How many days does the lender have to file the claim after settlement?",
+  "gold": "d03-s2",
+  "answer": "Within 60 days of the sale settlement date."
+ },
+ {
+  "id": "q12",
+  "question": "How long does Northwind take to assess a complete claim?",
+  "gold": "d03-s3",
+  "answer": "About 30 business days."
+ },
+ {
+  "id": "q13",
+  "question": "What is the most the insurer will pay out on a claim?",
+  "gold": "d03-s4",
+  "answer": "Up to the policy limit, the original loan plus capitalised premium."
+ },
+ {
+  "id": "q14",
+  "question": "Can the insurer chase me for money after paying the bank?",
+  "gold": "d03-s5",
+  "answer": "Yes, through subrogation, the borrower stays liable for the debt."
+ },
+ {
+  "id": "q15",
+  "question": "Will a claim be paid if I gave false income documents?",
+  "gold": "d04-s1",
+  "answer": "No, fraud and misrepresentation make a claim not payable."
+ },
+ {
+  "id": "q16",
+  "question": "What if the bank ignored its own lending rules?",
+  "gold": "d04-s2",
+  "answer": "Claims can be declined for lender breaches of policy."
+ },
+ {
+  "id": "q17",
+  "question": "Do I need building insurance for the property to be covered?",
+  "gold": "d04-s3",
+  "answer": "Yes, uninsured property damage is excluded."
+ },
+ {
+  "id": "q18",
+  "question": "Are construction loans and commercial loans covered?",
+  "gold": "d04-s5",
+  "answer": "No, commercial and certain construction loans are excluded."
+ },
+ {
+  "id": "q19",
+  "question": "What help is available if I can no longer afford repayments?",
+  "gold": "d05-s1",
+  "answer": "Contact the lender for pauses, reduced repayments or term extension."
+ },
+ {
+  "id": "q20",
+  "question": "When does the lender send a formal default notice?",
+  "gold": "d05-s2",
+  "answer": "After 60 days of missed repayments."
+ },
+ {
+  "id": "q21",
+  "question": "At how many days overdue does the insurer get told?",
+  "gold": "d05-s3",
+  "answer": "At 90 days in arrears."
+ },
+ {
+  "id": "q22",
+  "question": "Is selling the home myself better than a forced sale?",
+  "gold": "d05-s4",
+  "answer": "A voluntary sale often achieves a better price and lowers the shortfall."
+ },
+ {
+  "id": "q23",
+  "question": "How long do missed payments stay on my credit file?",
+  "gold": "d05-s5",
+  "answer": "Up to five years."
+ },
+ {
+  "id": "q24",
+  "question": "Can I cancel the policy myself to save money?",
+  "gold": "d06-s1",
+  "answer": "No, borrowers cannot cancel it directly."
+ },
+ {
+  "id": "q25",
+  "question": "Can I get some premium back if I pay off the loan quickly?",
+  "gold": "d06-s2",
+  "answer": "A partial refund is possible if repaid within 12 months."
+ },
+ {
+  "id": "q26",
+  "question": "What fee is deducted from a premium refund?",
+  "gold": "d06-s3",
+  "answer": "An administration fee of 150 dollars."
+ },
+ {
+  "id": "q27",
+  "question": "Can the policy move with me if I refinance with the same bank?",
+  "gold": "d06-s5",
+  "answer": "It may be transferred without a new premium if LVR has not increased."
+ },
+ {
+  "id": "q28",
+  "question": "Does Northwind sell my information to marketers?",
+  "gold": "d07-s2",
+  "answer": "No, data is not sold or used for marketing without consent."
+ },
+ {
+  "id": "q29",
+  "question": "How many years are my records kept after the policy ends?",
+  "gold": "d07-s3",
+  "answer": "Seven years."
+ },
+ {
+  "id": "q30",
+  "question": "Can I ask to see the personal data you hold on me?",
+  "gold": "d07-s4",
+  "answer": "Yes, requests are answered within 30 days, free of charge."
+ },
+ {
+  "id": "q31",
+  "question": "How quickly will a complaint be acknowledged?",
+  "gold": "d08-s1",
+  "answer": "Within one business day."
+ },
+ {
+  "id": "q32",
+  "question": "Where can I escalate if I am still unhappy after the internal review?",
+  "gold": "d08-s4",
+  "answer": "The Australian Financial Complaints Authority."
+ }
+]

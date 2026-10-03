@@ -1,0 +1,253 @@
+{
+ "synthetic": true,
+ "documents": [
+  {
+   "id": "d01",
+   "title": "Overview of Lenders Mortgage Insurance",
+   "sections": [
+    {
+     "id": "d01-s1",
+     "heading": "What LMI is",
+     "text": "Lenders mortgage insurance (LMI) protects the lender, not the borrower, if a home loan defaults and the sale of the property does not cover the outstanding balance. The borrower pays the premium, usually once, and it is often added to the loan amount."
+    },
+    {
+     "id": "d01-s2",
+     "heading": "When LMI applies",
+     "text": "Northwind Lenders requires LMI when the loan to value ratio (LVR) is above 80 percent. A borrower with a 10 percent deposit will therefore be asked to pay LMI, while a borrower with a 25 percent deposit will not."
+    },
+    {
+     "id": "d01-s3",
+     "heading": "Who is covered",
+     "text": "The policy covers the lender named on the loan contract. Co-borrowers and guarantors are not insured parties. If the borrower refinances with another lender, a new LMI policy may be required by that lender."
+    },
+    {
+     "id": "d01-s4",
+     "heading": "Policy term",
+     "text": "The policy starts on the day the loan is settled and ends when the loan is fully repaid or discharged. There is no need to renew it and the premium does not change during the life of the loan."
+    },
+    {
+     "id": "d01-s5",
+     "heading": "Why it exists",
+     "text": "LMI lets lenders approve loans with smaller deposits. This helps first home buyers enter the market sooner, in exchange for a one-off cost that depends on loan size, deposit and borrower profile."
+    }
+   ]
+  },
+  {
+   "id": "d02",
+   "title": "Eligibility and Premium Calculation",
+   "sections": [
+    {
+     "id": "d02-s1",
+     "heading": "Eligibility criteria",
+     "text": "To be eligible, applicants must be at least 18, hold an income that meets serviceability checks, and provide at least a 5 percent genuine savings deposit held for three months. Loans above 95 percent LVR are not accepted."
+    },
+    {
+     "id": "d02-s2",
+     "heading": "Premium factors",
+     "text": "The premium is calculated from three factors: the LVR, the loan amount, and whether the property is an owner-occupied home or an investment. Higher LVR and larger loans increase the premium."
+    },
+    {
+     "id": "d02-s3",
+     "heading": "Premium bands",
+     "text": "For an owner-occupied loan of 300,000 dollars, the example premium is about 1.0 percent of the loan at 85 percent LVR, 1.8 percent at 90 percent LVR and 3.2 percent at 95 percent LVR. These figures are illustrative only."
+    },
+    {
+     "id": "d02-s4",
+     "heading": "Capitalising the premium",
+     "text": "Borrowers can pay the premium upfront at settlement or capitalise it, meaning it is added to the loan balance. Capitalising increases total interest paid because the premium is repaid over the loan term."
+    },
+    {
+     "id": "d02-s5",
+     "heading": "Stamp duty on premium",
+     "text": "State governments may charge stamp duty on the LMI premium. The duty is calculated by the state revenue office, shown on the settlement statement, and is not refundable by Northwind."
+    }
+   ]
+  },
+  {
+   "id": "d03",
+   "title": "Claims Process",
+   "sections": [
+    {
+     "id": "d03-s1",
+     "heading": "When a claim arises",
+     "text": "A claim arises only after the lender has sold the secured property and the sale proceeds are less than the debt owed. The lender, not the borrower, lodges the claim with the insurer."
+    },
+    {
+     "id": "d03-s2",
+     "heading": "Lodging a claim",
+     "text": "The lender must lodge the claim within 60 days of the sale settlement date, supplying the loan contract, arrears history, valuation reports and the sale contract. Late claims may be reduced or declined."
+    },
+    {
+     "id": "d03-s3",
+     "heading": "Assessment time",
+     "text": "Northwind aims to assess complete claims within 30 business days. If extra documents are needed, the assessment clock pauses until the lender provides them."
+    },
+    {
+     "id": "d03-s4",
+     "heading": "Claim payment",
+     "text": "The insurer pays the lender the verified shortfall, up to the policy limit, which is the original loan amount plus capitalised premium. Interest and reasonable sale costs may also be included."
+    },
+    {
+     "id": "d03-s5",
+     "heading": "Recovery from borrower",
+     "text": "After paying a claim, the insurer may seek to recover the shortfall from the borrower. This is called subrogation. The borrower remains legally liable for the debt even though the lender has been paid."
+    }
+   ]
+  },
+  {
+   "id": "d04",
+   "title": "Exclusions and Limitations",
+   "sections": [
+    {
+     "id": "d04-s1",
+     "heading": "Fraud and misrepresentation",
+     "text": "No claim is payable if the loan was obtained through fraud or material misrepresentation, such as falsified payslips or undisclosed liabilities. The insurer may also cancel the policy and recover amounts already paid."
+    },
+    {
+     "id": "d04-s2",
+     "heading": "Lender breaches",
+     "text": "Claims can be declined where the lender did not follow its own lending policy, did not complete required checks, or failed to act on early signs of arrears in a reasonable time."
+    },
+    {
+     "id": "d04-s3",
+     "heading": "Property damage",
+     "text": "Losses caused by uninsured physical damage to the property are excluded. Borrowers must keep building insurance in place, and lenders should confirm that the cover is current before lodging a claim."
+    },
+    {
+     "id": "d04-s4",
+     "heading": "Policy limit",
+     "text": "The insurer will never pay more than the policy limit. Amounts above the limit, such as extra legal costs beyond what is reasonable, remain the lender's responsibility."
+    },
+    {
+     "id": "d04-s5",
+     "heading": "Excluded loan types",
+     "text": "Commercial loans, construction loans without a completion plan, and loans to non-residents without verified income are not covered by this policy."
+    }
+   ]
+  },
+  {
+   "id": "d05",
+   "title": "Financial Hardship and Arrears",
+   "sections": [
+    {
+     "id": "d05-s1",
+     "heading": "Hardship support",
+     "text": "Borrowers facing financial hardship should contact their lender as early as possible. Lenders can offer repayment pauses, reduced repayments for a set period, or a term extension to avoid default."
+    },
+    {
+     "id": "d05-s2",
+     "heading": "Arrears notices",
+     "text": "If repayments are missed, the lender sends a notice after 14 days, a second notice after 30 days and a formal default notice after 60 days. Each notice states the amount owed and how to arrange support."
+    },
+    {
+     "id": "d05-s3",
+     "heading": "Insurer involvement",
+     "text": "The insurer is notified when a loan reaches 90 days in arrears. At that point the insurer may work with the lender on a recovery plan, but the borrower still deals only with the lender."
+    },
+    {
+     "id": "d05-s4",
+     "heading": "Selling voluntarily",
+     "text": "Borrowers may choose to sell the property themselves to reduce losses. A voluntary sale often achieves a better price than a forced sale and can lower the shortfall that any claim would cover."
+    },
+    {
+     "id": "d05-s5",
+     "heading": "Impact on credit",
+     "text": "Missed repayments are reported to credit bureaus and can lower a credit score for up to five years, which may make future borrowing harder or more expensive."
+    }
+   ]
+  },
+  {
+   "id": "d06",
+   "title": "Cancellation and Premium Refunds",
+   "sections": [
+    {
+     "id": "d06-s1",
+     "heading": "Cancelling the policy",
+     "text": "Because the policy protects the lender, a borrower cannot cancel it directly. The policy ends only when the loan is repaid, discharged or refinanced and the lender notifies Northwind."
+    },
+    {
+     "id": "d06-s2",
+     "heading": "Refund eligibility",
+     "text": "A partial premium refund may be available if the loan is fully repaid within the first 12 months. After 12 months no refund is payable under the standard policy."
+    },
+    {
+     "id": "d06-s3",
+     "heading": "Refund calculation",
+     "text": "Within the first 12 months the refund equals the premium less an administration fee of 150 dollars, reduced pro rata for each full month the policy has been in force."
+    },
+    {
+     "id": "d06-s4",
+     "heading": "Requesting a refund",
+     "text": "Borrowers request refunds through their lender, who submits the payoff statement and policy details to Northwind. Refunds are paid to the lender, who passes them on to the borrower."
+    },
+    {
+     "id": "d06-s5",
+     "heading": "Refinancing and transfers",
+     "text": "When a loan is refinanced with the same lender, the policy may be transferred without a new premium if the loan to value ratio has not increased."
+    }
+   ]
+  },
+  {
+   "id": "d07",
+   "title": "Privacy and Data Handling",
+   "sections": [
+    {
+     "id": "d07-s1",
+     "heading": "Information we collect",
+     "text": "Northwind collects the personal and financial information supplied by the lender, including identity details, income evidence, property valuations and repayment history, only to assess risk and manage claims."
+    },
+    {
+     "id": "d07-s2",
+     "heading": "How data is used",
+     "text": "Data is used to price policies, assess claims, prevent fraud and meet regulatory obligations. It is not sold, and it is not used for marketing unless the borrower gives separate consent."
+    },
+    {
+     "id": "d07-s3",
+     "heading": "Retention period",
+     "text": "Records are kept for seven years after the policy ends so that late claims and regulatory reviews can be handled. After that period data is securely deleted or de-identified."
+    },
+    {
+     "id": "d07-s4",
+     "heading": "Access and correction",
+     "text": "Individuals may ask to see the information held about them, and request corrections if it is inaccurate. Requests are answered within 30 days and are free of charge."
+    },
+    {
+     "id": "d07-s5",
+     "heading": "Overseas disclosure",
+     "text": "Some processing, such as document storage, may be carried out by service providers in other countries. Northwind requires those providers to meet equivalent privacy and security standards."
+    }
+   ]
+  },
+  {
+   "id": "d08",
+   "title": "Complaints and Dispute Resolution",
+   "sections": [
+    {
+     "id": "d08-s1",
+     "heading": "Making a complaint",
+     "text": "Complaints can be made by phone, email or the online form. Northwind acknowledges each complaint within one business day and records it in a central register."
+    },
+    {
+     "id": "d08-s2",
+     "heading": "Resolution timeframes",
+     "text": "Standard complaints are resolved within 30 calendar days. Complex complaints, such as those involving a declined claim, may take longer, and the complainant is updated at least every 10 days."
+    },
+    {
+     "id": "d08-s3",
+     "heading": "Internal review",
+     "text": "If the complainant disagrees with the outcome, they may ask for an internal review by a senior officer who was not involved in the original decision. The review is completed within 15 business days."
+    },
+    {
+     "id": "d08-s4",
+     "heading": "External dispute resolution",
+     "text": "If the complaint is still unresolved, the complainant can take it to the Australian Financial Complaints Authority, a free and independent service, without needing a lawyer."
+    },
+    {
+     "id": "d08-s5",
+     "heading": "Compensation",
+     "text": "Where Northwind has made an error that caused a financial loss, it will correct the error and may offer compensation reasonable for the loss, such as refunding an incorrect fee."
+    }
+   ]
+  }
+ ]
+}
