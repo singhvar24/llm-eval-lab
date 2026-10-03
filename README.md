@@ -1,6 +1,8 @@
 # LLM Eval Lab
 
-**Live demo:** https://singhvar24.github.io/llm-eval-lab/ *(after GitHub Pages is enabled — see below)* · **Portfolio:** https://singhvar24.github.io/
+**Live demo:** https://singhvar24.github.io/llm-eval-lab/ · **Portfolio:** https://singhvar24.github.io/
+
+[![Cost vs quality chart with Pareto frontier](preview.jpg)](https://singhvar24.github.io/llm-eval-lab/)
 
 A small, honest toolkit for answering a practical RAG question: **which retrieval configuration is worth its cost?**
 It evaluates chunking strategy × retriever × top-k on retrieval quality, estimated prompt cost and measured latency, and shows the Pareto frontier.
@@ -50,7 +52,7 @@ python -m http.server 8000    # then open http://localhost:8000/ for the demo
 * The corpus and questions are **synthetic and small** (32 questions). Many configurations land within a few points of each other, so differences are indicative, not statistically significant.
 * **No LLM is called.** Answer quality comes from a deterministic extractive baseline, so "Answer F1" measures retrieval + sentence selection, not generation. The `extractive_answer` function is the intended plug-in point for a Bedrock or Anthropic-API generator; that integration is **not implemented here**.
 * The fictional insurer and all figures in the corpus are invented and do not describe any real product or company.
-* `Dockerfile` and `.github/workflows/ci.yml` were written and the commands inside them were run locally, but the image build and the GitHub Actions run had not been executed when this was written.
+* `Dockerfile` and `.github/workflows/ci.yml` were written and the commands inside them were run locally, but the image build and the GitHub Actions run had not been executed locally; the Actions workflow has since passed on GitHub.
 
 ## Parity between Python and the browser
 
@@ -59,6 +61,8 @@ python -m http.server 8000    # then open http://localhost:8000/ for the demo
 ## Publishing the demo
 
 Settings → Pages → *Deploy from a branch* → `main` / `(root)`. The site is plain static files; no build step.
+
+GitHub Actions CI (pytest, Node parity test, ruff) passed on the first run.
 
 ## Author
 
